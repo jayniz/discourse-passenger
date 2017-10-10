@@ -1,0 +1,4 @@
+#!/bin/sh
+cmd="docker build --network discourse-build-nw --build-arg DISCOURSE_REVISION=${DISCOURSE_REVISION:-master} -t jannis/discourse-passenger ."
+echo $cmd
+exec $cmd

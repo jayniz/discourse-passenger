@@ -1,0 +1,6 @@
+#!/bin/sh
+docker network create discourse-build-nw || true
+docker run --rm -itd --name discourse-build-postgres -e POSTGRES_USER=discourse -e POSTGRES_DB=discourse postgres:9 || true
+docker run --rm -itd --name discourse-build-redis redis:4 || true
+docker network connect --alias postgres discourse-build-nw discourse-build-postgres || true
+docker network connect --alias redis discourse-build-nw discourse-build-redis || true
