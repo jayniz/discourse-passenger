@@ -39,13 +39,14 @@ RUN bundle.sh
 COPY nginx/discourse.conf /etc/nginx/sites-enabled/
 COPY nginx/discourse-env.conf /etc/nginx/main.d/
 RUN rm -f /etc/service/nginx/down /etc/nginx/sites-available/default
-RUN mkdir -p /var/nginx/cache
-RUN chown -R www-data:www-data /var/nginx/cache
+RUN mkdir -p /var/nginx/cache /var/www/.passenger
+RUN chown -R www-data:www-data /var/nginx/cache /var/www/.passenger
 
 # Precompile assets
 RUN DISCOURSE_REDIS_HOST=redis DISCOURSE_DB_HOST=postgres rake db:migrate assets:precompile
 
 # Clean up
+RUN echo ${DISCOURSE_REVISION} > /VERSION
 RUN chown -R www-data:www-data /srv/discourse
 
 # Log to STDOUT/ERR
