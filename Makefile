@@ -1,4 +1,4 @@
-DISCOURSE_VERSION := "v1.8.8"
+DISCOURSE_VERSION := "v1.8.9"
 .PHONY: build
 
 default: build
