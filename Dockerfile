@@ -1,4 +1,4 @@
-FROM phusion/passenger-ruby24
+FROM phusion/passenger-ruby24:0.9.26
 ARG DISCOURSE_REVISION=HEAD
 ENV PASSENGER_APP_ENV=production
 ENV RAILS_ENV=production
