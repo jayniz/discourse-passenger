@@ -1,5 +1,5 @@
 FROM phusion/passenger-ruby24:0.9.26
-ARG DISCOURSE_REVISION=HEAD
+ARG DISCOURSE_VERSION=HEAD
 ENV PASSENGER_APP_ENV=production
 ENV RAILS_ENV=production
 ENV DEBIAN_FRONTEND=noninteractive
@@ -49,7 +49,7 @@ RUN mkdir -p /srv/discourse/public/uploads
 RUN DISCOURSE_REDIS_HOST=redis DISCOURSE_DB_HOST=postgres rake db:migrate assets:precompile
 
 # Clean up
-RUN echo ${DISCOURSE_REVISION} > /VERSION
+RUN echo ${DISCOURSE_VERSION} > /VERSION
 RUN chown -R www-data:www-data /srv/discourse
 
 # Log to STDOUT/ERR

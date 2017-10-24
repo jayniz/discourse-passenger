@@ -1,4 +1,4 @@
-DISCOURSE_REVISION := "v1.8.8"
+DISCOURSE_VERSION := "v1.8.8"
 .PHONY: build
 
 default: build
@@ -8,7 +8,7 @@ clean:
 
 build:
 	hooks/pre_build
-	DISCOURSE_REVISION=$(DISCOURSE_REVISION) hooks/build
+	DISCOURSE_VERSION=$(DISCOURSE_VERSION) hooks/build
 
 push:
 	docker push jannis/discourse-passenger
