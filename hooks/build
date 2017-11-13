@@ -1,4 +1,4 @@
 #!/bin/sh
-cmd="docker build --network discourse-build-nw --build-arg DISCOURSE_VERSION=${DISCOURSE_VERSION:-master} -t jannis/discourse-passenger ."
+cmd="docker build --network discourse-build-nw --build-arg DISCOURSE_VERSION=${DISCOURSE_VERSION:-master} -t jannis/discourse-passenger:${TAG:-latest} ."
 echo $cmd
 exec $cmd

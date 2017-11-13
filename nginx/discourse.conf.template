@@ -59,7 +59,7 @@ server {
   etag off;
 
   # prevent direct download of backups
-  location ^~ /backups/ {
+  location ^~ ${DISCOURSE_RELATIVE_URL_ROOT}/backups/ {
     internal;
   }
 
@@ -70,7 +70,7 @@ server {
   passenger_app_env production;
   add_header ETag "";
 
-  location ~* assets/.*\.(eot|ttf|woff|woff2|ico)$ {
+  location ~* ${DISCOURSE_RELATIVE_URL_ROOT}/assets/.*\.(eot|ttf|woff|woff2|ico)$ {
     expires 1y;
     add_header Cache-Control public;
     add_header Access-Control-Allow-Origin *;
@@ -87,27 +87,28 @@ server {
     break;
   }
 
-  location ~ ^/assets/ {
+  location ~ ^${DISCOURSE_RELATIVE_URL_ROOT}/assets/ {
     expires 1y;
     # asset pipeline enables this
     gzip_static on;
     add_header Cache-Control public;
+    rewrite ^${DISCOURSE_RELATIVE_URL_ROOT}(.*)$ $1 last;
     # TODO I don't think this break is needed, it just breaks out of rewrite
     break;
   }
 
-  location ~ ^/plugins/ {
+  location ~ ^${DISCOURSE_RELATIVE_URL_ROOT}/plugins/ {
     expires 1y;
     add_header Cache-Control public;
   }
 
   # cache emojis
-  location ~ /_?emoji.*\.(png|gif|jpg|jpeg)$/ {
+  location ~ ${DISCOURSE_RELATIVE_URL_ROOT}/_?emoji.*\.(png|gif|jpg|jpeg)$/ {
     expires 1y;
     add_header Cache-Control public;
   }
 
-  location ~ ^/uploads/ {
+  location ~ ^${DISCOURSE_RELATIVE_URL_ROOT}/uploads/ {
 
     # NOTE: it is really annoying that we can't just define headers
     # at the top level and inherit.
@@ -129,7 +130,7 @@ server {
     #if ($invalid_referer) { return 403; }
 
     # custom CSS
-    location ~ /stylesheet-cache/ {
+    location ~ ${DISCOURSE_RELATIVE_URL_ROOT}/stylesheet-cache/ {
         try_files $uri =404;
     }
     # this allows us to bypass rails
@@ -145,7 +146,7 @@ server {
     break;
   }
 
-  location ~ ^/admin/backups/ {
+  location ~ ^${DISCOURSE_RELATIVE_URL_ROOT}/admin/backups/ {
     proxy_set_header Host $http_host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -159,7 +160,7 @@ server {
   # This big block is needed so we can selectively enable
   # acceleration for backups and avatars
   # see note about repetition above
-  location ~ ^/(letter_avatar|user_avatar|highlight-js|stylesheets|favicon/proxied) {
+  location ~ ^${DISCOURSE_RELATIVE_URL_ROOT}/(letter_avatar|user_avatar|highlight-js|stylesheets|favicon/proxied) {
     proxy_set_header Host $http_host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -180,7 +181,7 @@ server {
 
   try_files $uri @discourse;
 
-  location /downloads/ {
+  location ${DISCOURSE_RELATIVE_URL_ROOT}/downloads/ {
     internal;
     alias $public/;
   }

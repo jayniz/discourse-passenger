@@ -1,4 +1,4 @@
-DISCOURSE_VERSION := "v1.8.10"
+VERSION := "1.8.10"
 .PHONY: build
 
 default: build
@@ -8,7 +8,8 @@ clean:
 
 build:
 	hooks/pre_build
-	DISCOURSE_VERSION=$(DISCOURSE_VERSION) hooks/build
+	DISCOURSE_VERSION=v$(VERSION) TAG=$(VERSION) hooks/build
+	make clean
 
 push:
-	docker push jannis/discourse-passenger
+	docker push jannis/discourse-passenger:$(VERSION)
