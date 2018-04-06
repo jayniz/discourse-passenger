@@ -1,4 +1,4 @@
-VERSION := "1.8.10"
+VERSION := "1.9.4"
 .PHONY: build
 
 default: build
