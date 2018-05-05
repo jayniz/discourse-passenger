@@ -12,7 +12,7 @@ RUN apt-get update &&                          \
       build-essential=12.1ubuntu2              \
       curl=7.47.0-1ubuntu2.2                   \
       gettext-base=0.19.7-2ubuntu3 \
-      ghostscript=9.18~dfsg~0-0ubuntu2.7       \
+      ghostscript=9.18~dfsg~0-0ubuntu2.8       \
       git-core=1:2.7.4-0ubuntu1.3              \
       imagemagick=8:6.8.9.9-7ubuntu5.9         \
       jhead=1:3.00-3                           \
@@ -20,7 +20,13 @@ RUN apt-get update &&                          \
       optipng=0.7.6-1                          \
       pngcrush=1.7.85-1                        \
       pngquant=2.5.0-1                         \
-      postgresql-client=9.5+173
+      wget=1.17.1-1ubuntu1.3
+
+RUN add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" &&\
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - &&\
+    apt-get update &&\
+    apt-get install -y --no-install-recommends \
+      postgresql-client-9.6
 
 RUN gem install bundler 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
