@@ -72,9 +72,14 @@ server {
 
   location ~* ${DISCOURSE_RELATIVE_URL_ROOT}/assets/.*\.(eot|ttf|woff|woff2|ico)$ {
     expires 1y;
+    gzip_static on;
     add_header Cache-Control public;
     add_header Access-Control-Allow-Origin *;
-   }
+    rewrite ^${DISCOURSE_RELATIVE_URL_ROOT}(.*)$ $1 last;
+    try_files $uri =404;
+    # TODO I don't think this break is needed, it just breaks out of rewrite
+    break;
+  }
 
   location = /srv/status {
     access_log off;
@@ -89,10 +94,10 @@ server {
 
   location ~ ^${DISCOURSE_RELATIVE_URL_ROOT}/assets/ {
     expires 1y;
-    # asset pipeline enables this
     gzip_static on;
     add_header Cache-Control public;
     rewrite ^${DISCOURSE_RELATIVE_URL_ROOT}(.*)$ $1 last;
+    try_files $uri =404;
     # TODO I don't think this break is needed, it just breaks out of rewrite
     break;
   }
